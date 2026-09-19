@@ -129,7 +129,10 @@ CarbohydrateCalculatorTests/
 
 ---
 
-## Sample Interview Questions & Answers
+## Interview Guide
+
+This section is intentionally included in the project experience file.
+The sample questions and answers below are a part of my interview preparation.
 
 ### Technical Questions
 
@@ -212,21 +215,20 @@ A: I automated the tests that we ran every sprint – the core functional tests 
 
 ---
 
-## Talking Points for Interviews
+### Talking Points for Interviews
 
 When discussing this project, hit these points naturally:
 
 1. **You built something from nothing** – there was no test framework when you started, you evaluated options and chose SpecFlow + Selenium C# because it fit the tech stack
 2. **You think about edge cases** – don't just say "I tested boundary values," give the specific example of Integer.MAX_VALUE causing a server error instead of a validation message
 3. **You balance manual and automated** – not everything should be automated; print preview verification and visual layout checks were better done manually
-4. **You collaborated with devs** – the XSS disagreement story shows you can advocate for quality without being adversarial
-5. **You understand the full stack** – you used DevTools to inspect network requests, not just the UI
-6. **You're practical about performance testing** – you used JMeter for load testing but didn't over-engineer it; you set reasonable thresholds and reported when they were exceeded
-7. **You manage risk** – the tight deadline story shows you can prioritize and communicate gaps
+4. **You understand the full stack** – you used DevTools to inspect network requests, not just the UI
+5. **You're practical about performance testing** – you used JMeter for load testing but didn't over-engineer it; you set reasonable thresholds and reported when they were exceeded
+6. **You manage risk** – the tight deadline story shows you can prioritize and communicate gaps
 
 ---
 
-## Metrics You Can Reference
+### Metrics You Can Reference
 
 - 20 test cases covering 8 testing types
 - 14 out of 20 test cases automated (70% automation coverage)
