@@ -1,0 +1,34 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Carbohydrate Calculator Test Suite" parallel="false">
+
+    <test name="Navigation Tests">
+        <classes>
+            <class name="tests.NavigationTest"/>
+        </classes>
+    </test>
+
+    <test name="Age Validation Tests">
+        <classes>
+            <class name="tests.AgeValidationTest"/>
+        </classes>
+    </test>
+
+    <test name="Calculator Functionality Tests">
+        <classes>
+            <class name="tests.CalculatorFunctionalityTest"/>
+        </classes>
+    </test>
+
+    <test name="Clear Button Tests">
+        <classes>
+            <class name="tests.ClearButtonTest"/>
+        </classes>
+    </test>
+
+    <test name="Security Tests">
+        <classes>
+            <class name="tests.SecurityTest"/>
+        </classes>
+    </test>
+
+</suite>
