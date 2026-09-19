@@ -39,3 +39,5 @@ CarbohydrateCalculatorTests/
 ## UI Automation Test Execution Demo
 
 https://github.com/user-attachments/assets/6573a710-2f49-4dc0-abd7-e6e54940475e
+
+A more detailed summary can be found in [QA_Project_Experience.md](./QA_Project_Experience.md)
