@@ -1,4 +1,4 @@
-# QA Project Experience – Carbohydrate Calculator (Calculator.net)
+# QA Project Experience – Carbohydrate Calculator
 
 ## Project Overview
 
