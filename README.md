@@ -3,7 +3,6 @@
 ## Project Overview
 
 - I worked on the QA effort for a nutrition calculator web application – specifically the Carbohydrate Calculator page on Calculator.net, https://www.calculator.net/carbohydrate-calculator.html. 
-- The project is written by Claude Opus 4.6 and then revised by me(Juju Ma).
 - The application lets users input their age, gender, height, weight, and activity level to compute daily carbohydrate intake recommendations. The page also includes unit converters, a search bar, print/save functionality, and integration with the site's user account system.
 
 ---
