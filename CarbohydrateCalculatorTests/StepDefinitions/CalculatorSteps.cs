@@ -109,6 +109,13 @@ namespace CarbohydrateCalculatorTests.StepDefinitions
             _driver.Url.Should().Contain(urlPart);
         }
 
+        [Then(@"the browser print dialog should be requested")]
+        public void ThenTheBrowserPrintDialogShouldBeRequested()
+        {
+            _page.WasPrintRequested().Should().BeTrue(
+                "clicking Print should invoke the browser print API");
+        }
+
         [Then(@"I should see an error message containing ""(.*)""")]
         public void ThenIShouldSeeAnErrorMessageContaining(string expectedText)
         {
