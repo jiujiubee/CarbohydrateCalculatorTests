@@ -17,7 +17,7 @@ concurrency:
 jobs:
   selenium:
     name: Selenium / ${{ matrix.browser }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -26,6 +26,7 @@ jobs:
 
     env:
       BROWSER: ${{ matrix.browser }}
+      HEADLESS: 'true'
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
 
