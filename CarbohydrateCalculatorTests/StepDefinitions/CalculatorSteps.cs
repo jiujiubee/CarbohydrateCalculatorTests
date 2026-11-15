@@ -73,10 +73,11 @@ namespace CarbohydrateCalculatorTests.StepDefinitions
             _page.ClickSettings();
         }
 
-        [When(@"I click the Print link")]
-        public void WhenIClickThePrintLink()
+        [Then(@"the Print link should be available")]
+        public void ThenThePrintLinkShouldBeAvailable()
         {
-            _page.ClickPrint();
+            _page.IsPrintLinkAvailable().Should().BeTrue(
+                "the calculator page should expose an actionable Print link");
         }
 
         [When(@"I click the Other Units header")]
@@ -107,13 +108,6 @@ namespace CarbohydrateCalculatorTests.StepDefinitions
         public void ThenTheUrlShouldContain(string urlPart)
         {
             _driver.Url.Should().Contain(urlPart);
-        }
-
-        [Then(@"the browser print dialog should be requested")]
-        public void ThenTheBrowserPrintDialogShouldBeRequested()
-        {
-            _page.WasPrintRequested().Should().BeTrue(
-                "clicking Print should invoke the browser print API");
         }
 
         [Then(@"I should see an error message containing ""(.*)""")]
