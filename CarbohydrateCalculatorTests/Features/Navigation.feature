@@ -21,4 +21,4 @@ Feature: Calculator Navigation
     And I fill in default calculation data
     And I click Calculate
     When I click the Print link
-    Then the URL should contain "print"
+    Then the browser print dialog should be requested
