@@ -53,7 +53,25 @@ namespace CarbohydrateCalculatorTests.Pages
 
         public void ClickSignIn()
         {
-            ClickElement(_signInLink);
+            var originalHandle = _driver.CurrentWindowHandle;
+            var originalHandles = _driver.WindowHandles;
+            var link = _driver.FindElement(_signInLink);
+
+            ((IJavaScriptExecutor)_driver).ExecuteScript(
+                "arguments[0].scrollIntoView({block: 'center'});", link);
+            link.Click();
+
+            _wait.Until(driver =>
+                driver.WindowHandles.Count > originalHandles.Count ||
+                !driver.Url.Equals(PageUrl, StringComparison.OrdinalIgnoreCase));
+
+            var newHandle = _driver.WindowHandles
+                .FirstOrDefault(handle => !originalHandles.Contains(handle));
+
+            if (newHandle != null)
+                _driver.SwitchTo().Window(newHandle);
+            else
+                _driver.SwitchTo().Window(originalHandle);
         }
 
         public void EnterAge(string age)
@@ -132,7 +150,15 @@ namespace CarbohydrateCalculatorTests.Pages
 
         public void ClickPrint()
         {
+            ((IJavaScriptExecutor)_driver).ExecuteScript(
+                "window.__printRequested = false; window.print = function () { window.__printRequested = true; };");
             ClickElement(_printLink);
+        }
+
+        public bool WasPrintRequested()
+        {
+            return (bool)((IJavaScriptExecutor)_driver)
+                .ExecuteScript("return window.__printRequested === true;");
         }
 
         public void ClickOtherUnits()
