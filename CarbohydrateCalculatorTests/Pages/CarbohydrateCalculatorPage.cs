@@ -102,12 +102,14 @@ namespace CarbohydrateCalculatorTests.Pages
         {
             var js = (IJavaScriptExecutor)_driver;
             var element = _driver.FindElement(locator);
-            js.ExecuteScript("arguments[0].scrollIntoView({block: 'center'});", element);
-            element.Clear();
-            element.SendKeys(value);
+            // The calculator renders alternate unit inputs; some are intentionally hidden.
+            // Set the value directly so hidden unit fields can still be populated, then
+            // emit the events expected by the page's validation and calculation handlers.
             js.ExecuteScript(
+                "arguments[0].value = arguments[1];" +
                 "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
-                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", element);
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                element, value);
         }
 
         private void ClickElement(By locator)
