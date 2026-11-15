@@ -148,17 +148,20 @@ namespace CarbohydrateCalculatorTests.Pages
             ClickElement(_settingsLink);
         }
 
-        public void ClickPrint()
+        public bool IsPrintLinkAvailable()
         {
-            ((IJavaScriptExecutor)_driver).ExecuteScript(
-                "window.__printRequested = false; window.print = function () { window.__printRequested = true; };");
-            ClickElement(_printLink);
-        }
-
-        public bool WasPrintRequested()
-        {
-            return (bool)((IJavaScriptExecutor)_driver)
-                .ExecuteScript("return window.__printRequested === true;");
+            try
+            {
+                var link = _driver.FindElement(_printLink);
+                var href = link.GetAttribute("href");
+                var onclick = link.GetAttribute("onclick");
+                return link.Displayed && link.Enabled &&
+                    (!string.IsNullOrWhiteSpace(href) || !string.IsNullOrWhiteSpace(onclick));
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
 
         public void ClickOtherUnits()
