@@ -9,21 +9,49 @@ namespace CarbohydrateCalculatorTests.Drivers
     {
         public static IWebDriver CreateDriver(string browser = "chrome")
         {
+            var headless = string.Equals(
+                Environment.GetEnvironmentVariable("HEADLESS"),
+                "true",
+                StringComparison.OrdinalIgnoreCase);
+
             IWebDriver driver;
 
-            switch (browser.ToLower())
+            switch (browser.ToLowerInvariant())
             {
                 case "firefox":
-                    driver = new FirefoxDriver();
+                    var firefoxOptions = new FirefoxOptions();
+                    if (headless)
+                        firefoxOptions.AddArgument("-headless");
+                    driver = new FirefoxDriver(firefoxOptions);
                     break;
+
                 case "edge":
-                    driver = new EdgeDriver();
+                    var edgeOptions = new EdgeOptions();
+                    if (headless)
+                    {
+                        edgeOptions.AddArgument("--headless=new");
+                        edgeOptions.AddArgument("--no-sandbox");
+                        edgeOptions.AddArgument("--disable-dev-shm-usage");
+                        edgeOptions.AddArgument("--disable-gpu");
+                    }
+                    driver = new EdgeDriver(edgeOptions);
                     break;
+
                 case "chrome":
                 default:
-                    var options = new ChromeOptions();
-                    options.AddArgument("--start-maximized");
-                    driver = new ChromeDriver(options);
+                    var chromeOptions = new ChromeOptions();
+                    if (headless)
+                    {
+                        chromeOptions.AddArgument("--headless=new");
+                        chromeOptions.AddArgument("--no-sandbox");
+                        chromeOptions.AddArgument("--disable-dev-shm-usage");
+                        chromeOptions.AddArgument("--disable-gpu");
+                    }
+                    else
+                    {
+                        chromeOptions.AddArgument("--start-maximized");
+                    }
+                    driver = new ChromeDriver(chromeOptions);
                     break;
             }
 

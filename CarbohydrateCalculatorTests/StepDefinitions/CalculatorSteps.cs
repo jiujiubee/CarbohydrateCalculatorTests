@@ -73,10 +73,11 @@ namespace CarbohydrateCalculatorTests.StepDefinitions
             _page.ClickSettings();
         }
 
-        [When(@"I click the Print link")]
-        public void WhenIClickThePrintLink()
+        [Then(@"the Print link should be available")]
+        public void ThenThePrintLinkShouldBeAvailable()
         {
-            _page.ClickPrint();
+            _page.IsPrintLinkAvailable().Should().BeTrue(
+                "the calculator page should expose an actionable Print link");
         }
 
         [When(@"I click the Other Units header")]

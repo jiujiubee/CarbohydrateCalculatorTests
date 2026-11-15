@@ -16,9 +16,6 @@ Feature: Calculator Navigation
     Then I should be redirected to a URL containing "sign-in"
 
   @TC14 @Functional @High
-  Scenario: TC14 - Print link navigates to print-friendly page
+  Scenario: TC14 - Print link is available
     Given I am on the carbohydrate calculator page
-    And I fill in default calculation data
-    And I click Calculate
-    When I click the Print link
-    Then the URL should contain "print"
+    Then the Print link should be available

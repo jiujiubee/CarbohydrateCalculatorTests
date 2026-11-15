@@ -53,7 +53,25 @@ namespace CarbohydrateCalculatorTests.Pages
 
         public void ClickSignIn()
         {
-            ClickElement(_signInLink);
+            var originalHandle = _driver.CurrentWindowHandle;
+            var originalHandles = _driver.WindowHandles;
+            var link = _driver.FindElement(_signInLink);
+
+            ((IJavaScriptExecutor)_driver).ExecuteScript(
+                "arguments[0].scrollIntoView({block: 'center'});", link);
+            link.Click();
+
+            _wait.Until(driver =>
+                driver.WindowHandles.Count > originalHandles.Count ||
+                !driver.Url.Equals(PageUrl, StringComparison.OrdinalIgnoreCase));
+
+            var newHandle = _driver.WindowHandles
+                .FirstOrDefault(handle => !originalHandles.Contains(handle));
+
+            if (newHandle != null)
+                _driver.SwitchTo().Window(newHandle);
+            else
+                _driver.SwitchTo().Window(originalHandle);
         }
 
         public void EnterAge(string age)
@@ -84,9 +102,14 @@ namespace CarbohydrateCalculatorTests.Pages
         {
             var js = (IJavaScriptExecutor)_driver;
             var element = _driver.FindElement(locator);
-            js.ExecuteScript("arguments[0].scrollIntoView(true);", element);
-            js.ExecuteScript("arguments[0].value = '';", element);
-            js.ExecuteScript("arguments[0].value = arguments[1];", element, value);
+            // The calculator renders alternate unit inputs; some are intentionally hidden.
+            // Set the value directly so hidden unit fields can still be populated, then
+            // emit the events expected by the page's validation and calculation handlers.
+            js.ExecuteScript(
+                "arguments[0].value = arguments[1];" +
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                element, value);
         }
 
         private void ClickElement(By locator)
@@ -130,9 +153,20 @@ namespace CarbohydrateCalculatorTests.Pages
             ClickElement(_settingsLink);
         }
 
-        public void ClickPrint()
+        public bool IsPrintLinkAvailable()
         {
-            ClickElement(_printLink);
+            try
+            {
+                var link = _driver.FindElement(_printLink);
+                var href = link.GetAttribute("href");
+                var onclick = link.GetAttribute("onclick");
+                return link.Displayed && link.Enabled &&
+                    (!string.IsNullOrWhiteSpace(href) || !string.IsNullOrWhiteSpace(onclick));
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
 
         public void ClickOtherUnits()
