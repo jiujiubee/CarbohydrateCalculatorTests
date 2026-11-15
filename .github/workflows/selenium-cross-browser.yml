@@ -1,0 +1,74 @@
+name: Selenium Cross-Browser Tests
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: selenium-cross-browser-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  selenium:
+    name: Selenium / ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, edge]
+
+    env:
+      BROWSER: ${{ matrix.browser }}
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Set up Chrome
+        if: matrix.browser == 'chrome'
+        uses: browser-actions/setup-chrome@v2
+        with:
+          install-dependencies: true
+
+      - name: Set up Firefox
+        if: matrix.browser == 'firefox'
+        uses: browser-actions/setup-firefox@v1
+
+      - name: Set up Microsoft Edge
+        if: matrix.browser == 'edge'
+        uses: browser-actions/setup-edge@v1
+
+      - name: Restore dependencies
+        run: dotnet restore CarbohydrateCalculatorTests/CarbohydrateCalculatorTests.csproj
+
+      - name: Run Selenium tests
+        run: |
+          mkdir -p TestResults
+          xvfb-run --auto-servernum dotnet test \
+            CarbohydrateCalculatorTests/CarbohydrateCalculatorTests.csproj \
+            --no-restore \
+            --logger "trx;LogFileName=${{ matrix.browser }}.trx" \
+            --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-results-${{ matrix.browser }}
+          path: TestResults/*.trx
+          if-no-files-found: warn
+          retention-days: 14
