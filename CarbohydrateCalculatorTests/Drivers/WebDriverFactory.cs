@@ -55,7 +55,11 @@ namespace CarbohydrateCalculatorTests.Drivers
                     break;
             }
 
+            // Keep navigation bounded: remote calculator pages can occasionally stall
+            // while loading third-party resources. DOM readiness is sufficient for these tests.
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
+            driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(30);
             return driver;
         }
     }
